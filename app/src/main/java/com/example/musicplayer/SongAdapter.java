@@ -1,5 +1,6 @@
 package com.example.musicplayer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -83,5 +84,12 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemCount() {
         return songs.size();
+    }
+
+    // filter songs and search results
+    @SuppressLint("NotifyDataSetChanged")
+    public void filterSongs(List<Song> filteredList){
+        songs = filteredList;
+        notifyDataSetChanged();
     }
 }
