@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.widget.Toast;
 
 import com.google.android.material.internal.TouchObserverFrameLayout;
@@ -85,6 +88,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchSongs() {
+        List<Song> songs = new ArrayList<>();
+        Uri mediaSearchUri;
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            mediaSearchUri = MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL);
+        }else {
+            mediaSearchUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        }
+
+        //define projection
+        String[] projection = new String[]{
+                MediaStore.Audio.Media._ID,
+                MediaStore.Audio.Media.DISPLAY_NAME,
+                MediaStore.Audio.Media.DURATION,
+                MediaStore.Audio.Media.SIZE,
+                MediaStore.Audio.Media.ALBUM_ID,
+        };
+
+        String sortOrder = MediaStore.Audio.Media.DATE_ADDED + "DESC";
+
+        // GET THE SONGS
+        try(Cursor cursor = getContentResolver().query(mediaSearchUri, projection, null, null, sortOrder)){
+            int idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID);
+            int nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME);
+            int durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION);
+            int sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE);
+            int albumIdColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID);
+        }
     }
 
 }
