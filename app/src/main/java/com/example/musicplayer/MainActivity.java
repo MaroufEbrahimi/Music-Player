@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
+import com.example.musicplayer.Manifest.permission;
 import com.google.android.material.internal.TouchObserverFrameLayout;
 
 import java.util.ArrayList;
@@ -30,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     SongAdapter songAdapter;
     List<Song> allSongs = new ArrayList<>();
     ActivityResultLauncher<String> storagePermissionLauncher;
-    //final String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+//    final String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+
     final String permission = Manifest.permission.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION;
 
     @Override
@@ -115,7 +118,37 @@ public class MainActivity extends AppCompatActivity {
             int durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION);
             int sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE);
             int albumIdColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID);
+
+            // clear the previous loaded before adding loading again
+            while(cursor.moveToNext()){
+                long id = cursor.getLong(idColumn);
+                String name = cursor.getString(nameColumn);
+                int duration = cursor.getInt(durationColumn);
+                int size = cursor.getInt(sizeColumn);
+                long albumId = cursor.getLong(albumIdColumn);
+
+                // song uri
+                Uri uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI ,id);
+
+                // album artwork uri
+                Uri albumArtworkUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId);
+
+                // remove .mp3 extension from the song's name
+                name = name.substring(0, name.lastIndexOf("."));
+
+                // song item
+                Song song = new Song(name, uri, albumArtworkUri, size, duration);
+
+                // add song item to the song list
+                songs.add(song);
+            }
+
+            // display songs
+            showSongs(songs);
         }
     }
 
+    private void showSongs(List<Song> songs) {
+
+    }
 }
