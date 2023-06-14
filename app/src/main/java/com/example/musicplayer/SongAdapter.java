@@ -92,4 +92,21 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         songs = filteredList;
         notifyDataSetChanged();
     }
+
+    @SuppressLint("DefaultLocale")
+    private String getDuration(int totalDuration) {
+        String totalDurationText;
+
+        int hrs = totalDuration / (1000*60*60);
+        int min = (totalDuration % (1000*60*60)) / (1000*60);
+        int secs = (((totalDuration % (1000*60*60)) % (1000*60*60)) % (1000*600)) / 1000;
+
+        if(hrs < 1){
+            totalDurationText = String.format("%02d:%02d", min, secs);
+        }else {
+            totalDurationText = String.format("%1d:%02d:%02d", hrs, min, secs);
+        }
+
+        return totalDurationText;
+    }
 }
