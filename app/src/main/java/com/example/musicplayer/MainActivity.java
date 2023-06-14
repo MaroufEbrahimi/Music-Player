@@ -5,6 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
@@ -149,6 +150,51 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showSongs(List<Song> songs) {
+        if(songs.size() == 0){
+            Toast.makeText(this, "No songs", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        // save songs
+        allSongs.clear();
+        allSongs.addAll(songs);
+
+        // update tool bar title
+        String title = getResources().getString(R.string.app_name) + " - " +songs.size();
+        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
+
+        // layout manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        // songs adapter
+        songAdapter = new SongAdapter(this, songs);
+        // set the adapter to recyclerview
+        recyclerView.setAdapter(songAdapter);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
