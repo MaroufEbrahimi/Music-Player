@@ -187,7 +187,43 @@ public class MainActivity extends AppCompatActivity {
         MenuItem menuItem = menu.findItem(R.id.searchBtn);
         SearchView searchView = (SearchView) menuItem.getActionView();
 
+        // search song method
+        SearchSong(searchView);
+
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void SearchSong(SearchView searchView) {
+        // search view listener
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // filter the songs
+                filterSongs(newText.toLowerCase());
+                return true;
+            }
+        });
+    }
+
+    private void filterSongs(String query) {
+        List<Song> filteredList = new ArrayList<>();
+
+        if(allSongs.size() > 0){
+            for(Song song : allSongs){
+                if(song.getTitle().toLowerCase().contains(query)){
+                    filteredList.add(song);
+                }
+            }
+
+            if(songAdapter != null){
+                songAdapter.filterSongs(filteredList);
+            }
+        }
     }
 }
 
