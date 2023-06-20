@@ -1,8 +1,11 @@
 package com.example.musicplayer;
 
+import static com.example.musicplayer.Manifest.*;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,9 +20,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.musicplayer.Manifest.permission;
+
 import com.google.android.material.internal.TouchObserverFrameLayout;
 
 import java.util.ArrayList;
@@ -171,6 +176,18 @@ public class MainActivity extends AppCompatActivity {
         songAdapter = new SongAdapter(this, songs);
         // set the adapter to recyclerview
         recyclerView.setAdapter(songAdapter);
+    }
+
+    // settings the menu or search button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.search_btn, menu);
+
+        // search button item
+        MenuItem menuItem = menu.findItem(R.id.searchBtn);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+
+        return super.onCreateOptionsMenu(menu);
     }
 }
 
