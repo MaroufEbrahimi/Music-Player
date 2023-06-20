@@ -10,8 +10,7 @@ public class Song {
     int size;
     int duration;
 
-    // constructor (right click --> generate --> constructor)
-
+    // constructor (right click --> generate --> constructor
     public Song(String title, Uri uri, Uri artworkUri, int size, int duration) {
         this.title = title;
         this.uri = uri;
@@ -21,7 +20,6 @@ public class Song {
     }
 
     // getters (right click --> generate --> getter)
-
     public String getTitle() {
         return title;
     }
