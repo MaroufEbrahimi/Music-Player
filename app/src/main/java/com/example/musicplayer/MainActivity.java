@@ -16,12 +16,14 @@ import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.drawable.ScaleDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.ScaleAnimation;
 import android.widget.Toast;
 
 
@@ -176,6 +178,8 @@ public class MainActivity extends AppCompatActivity {
         songAdapter = new SongAdapter(this, songs);
         // set the adapter to recyclerview
         recyclerView.setAdapter(songAdapter);
+
+        // recyclerview animators
     }
 
     // settings the menu or search button
